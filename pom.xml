@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.yaml</groupId>
+    <groupId>io.github.snake-yaml</groupId>
     <artifactId>snakeyaml</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.8</version>
     <packaging>bundle</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.scm.id>bitbucket</project.scm.id>
         <release.repo.url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</release.repo.url>
         <snapshot.repo.url>https://oss.sonatype.org/content/repositories/snapshots/</snapshot.repo.url>
-        <maven.compiler.source>7</maven.compiler.source>
-        <maven.compiler.target>7</maven.compiler.target>
-        <maven.compiler.release>7</maven.compiler.release>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.release>8</maven.compiler.release>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven-bundle-plugin.version>5.1.8</maven-bundle-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version><!-- for Github CI -->
@@ -23,11 +25,7 @@
     <name>SnakeYAML</name>
     <description>YAML 1.1 parser and emitter for Java</description>
     <inceptionYear>2008</inceptionYear>
-    <url>https://bitbucket.org/snakeyaml/snakeyaml</url>
-    <issueManagement>
-        <system>Bitbucket</system>
-        <url>https://bitbucket.org/snakeyaml/snakeyaml/issues</url>
-    </issueManagement>
+    <url>https://github.com/snake-yaml/snakeyaml</url>
     <mailingLists>
         <mailingList>
             <name>SnakeYAML developers and users List</name>
@@ -35,10 +33,9 @@
         </mailingList>
     </mailingLists>
     <scm>
-        <connection>scm:git:http://bitbucket.org/snakeyaml/snakeyaml</connection>
-        <developerConnection>scm:git:ssh://git@bitbucket.org/snakeyaml/snakeyaml</developerConnection>
-        <url>https://bitbucket.org/snakeyaml/snakeyaml/src</url>
-        <tag>HEAD</tag>
+        <connection>scm:git:https://github.com/snake-yaml/snakeyaml</connection>
+        <url>https://github.com/snake-yaml/snakeyaml.git</url>
+        <tag>2.8</tag>
     </scm>
     <licenses>
         <license>
@@ -49,14 +46,9 @@
     </licenses>
     <developers>
         <developer>
-            <id>asomov</id>
-            <name>Andrey Somov</name>
-            <email>public.somov@gmail.com</email>
-        </developer>
-        <developer>
-            <id>maslovalex</id>
-            <name>Alexander Maslov</name>
-            <email>alexander.maslov@gmail.com</email>
+            <id>Snake</id>
+            <name>Snake Yaml</name>
+            <email>snake@email</email>
         </developer>
     </developers>
     <dependencies>
@@ -145,7 +137,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
+                    <version>3.12.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -195,14 +187,16 @@
                 <executions>
                     <execution>
                         <id>module-info-compile</id>
-                        <goals><goal>compile</goal></goals>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
                         <configuration>
                             <release>9</release>
                             <compileSourceRoots>${project.basedir}/src/main/java9</compileSourceRoots>
                             <multiReleaseOutput>true</multiReleaseOutput>
-                              <jdkToolchain>
+                            <jdkToolchain>
                                 <version>[11,)</version>
-                              </jdkToolchain>
+                            </jdkToolchain>
                         </configuration>
                     </execution>
                 </executions>
@@ -340,17 +334,13 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <!-- the version is compatible with Nexus, do not change -->
-                <version>1.6.8</version>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.1.2</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>sonatype-nexus-staging</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                    <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
-                    <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+                    <publishingServerId>central</publishingServerId>
+                    <tokenEnabled>true</tokenEnabled>
                 </configuration>
             </plugin>
             <plugin>
@@ -477,7 +467,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
