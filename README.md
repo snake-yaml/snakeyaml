@@ -29,18 +29,3 @@ For YAML 1.2 (which is a superset of JSON) you may have a look at [SnakeYAML Eng
 * support for all types from the [YAML types repository](http://yaml.org/type/index.html).
 * relatively sensible error messages.
 * when you plan to feed the parser with untrusted data please study the settings which allow to restrict incoming data.
-
-
-## Info ##
- * [Changes](https://bitbucket.org/snakeyaml/snakeyaml/wiki/Changes)
- * [Documentation](https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation)
- * [CVE and untrusted data](https://bitbucket.org/snakeyaml/snakeyaml/wiki/CVE%20&%20NIST.md)
-
-## Contribute ##
-* GIT [is now used](https://bitbucket.org/snakeyaml/snakeyaml/wiki/Migration%20to%20Git) to dance with the [source code](https://bitbucket.org/snakeyaml/snakeyaml/src).
-* If you find a bug in SnakeYAML, please [file a bug report](https://bitbucket.org/snakeyaml/snakeyaml/issues?status=new&status=open&is_spam=!spam).
-* You may discuss SnakeYAML at
-[the mailing list](http://groups.google.com/group/snakeyaml-core).
-* [Slack workspace](https://app.slack.com/client/T26CKL7FU/D02URJSL2KS)
-* Telegram group is removed because of the spam
-* [YAML community](https://matrix.to/#/%23chat:yaml.io)
